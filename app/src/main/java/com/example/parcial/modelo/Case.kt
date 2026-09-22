@@ -6,5 +6,7 @@ data class Caso(
     val descripcion: String,
     val cliente: String,
     val fechaInicio: String,
-    val estado: String // "En investigación" o "Cerrado"
+    val estado: String, // "En investigación" o "Cerrado"
+    val hallazgos: MutableList<Hallazgo> = mutableListOf(),
+    val evidencias: MutableList<Evidencia> = mutableListOf()
 )
