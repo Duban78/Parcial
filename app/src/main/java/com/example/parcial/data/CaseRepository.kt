@@ -1,69 +1,49 @@
 package com.example.parcial.data
 
-import com.example.parcial.model.Caso
+import com.example.parcial.modelo.Caso
+import com.example.parcial.modelo.Evidencia
+import com.example.parcial.modelo.Hallazgo
 
 object CasoRepository {
-
-    // Lista en memoria con casos de prueba basados en los mockups del parcial
     private val listaCasos = mutableListOf(
         Caso(
-            id = "W001",
-            titulo = "Robo en la galería",
-            descripcion = "Robo de varias piezas de arte en la galería central. Se sospecha de un grupo organizado.",
-            cliente = "Galería de Arte Moderno",
-            fechaInicio = "12 mar 2025",
-            estado = "En investigación"
+            id = "C1",
+            titulo = "Robo en oficina central",
+            descripcion = "Investigación sobre acceso no autorizado y sustracción de equipos.",
+            cliente = "Empresa Tecnológica S.A.",
+            fechaInicio = "2026-09-01",
+            estado = "En investigación",
+            hallazgos = mutableListOf(
+                Hallazgo("H1", "Puerta trasera forzada", "2026-09-02")
+            ),
+            evidencias = mutableListOf(
+                Evidencia("E1", "Video de seguridad cámara 4", "Digital")
+            )
         ),
         Caso(
-            id = "B002",
-            titulo = "Fraude corporativo",
-            descripcion = "Desvío de fondos no autorizado en las cuentas principales.",
-            cliente = "Financiera del Norte",
-            fechaInicio = "15 mar 2025",
-            estado = "En investigación"
-        ),
-        Caso(
-            id = "C003",
-            titulo = "Desaparición de persona",
-            descripcion = "Investigación sobre la desaparición de un ejecutivo.",
-            cliente = "Familia Pérez",
-            fechaInicio = "20 feb 2025",
-            estado = "Cerrado"
+            id = "C2",
+            titulo = "Fraude financiero interno",
+            descripcion = "Auditoría de transacciones sospechosas en el departamento de contabilidad.",
+            cliente = "Financiera Global",
+            fechaInicio = "2026-09-10",
+            estado = "En investigación",
+            hallazgos = mutableListOf(),
+            evidencias = mutableListOf()
         )
     )
 
-    // 1. Obtener la lista completa de casos
     fun obtenerCasos(): List<Caso> = listaCasos
 
-    // 2. Obtener un caso específico por su ID
-    fun obtenerCasoPorId(id: String): Caso? {
-        return listaCasos.find { it.id == id }
+    fun obtenerCasoPorId(id: String): Caso? = listaCasos.find { it.id == id }
+
+    fun buscarCasos(query: String): List<Caso> {
+        return listaCasos.filter {
+            it.titulo.contains(query, ignoreCase = true) ||
+                    it.cliente.contains(query, ignoreCase = true)
+        }
     }
 
-    // 3. Crear/Agregar un nuevo caso
     fun agregarCaso(caso: Caso) {
         listaCasos.add(caso)
-    }
-
-    // 4. Editar un caso existente
-    fun actualizarCaso(casoActualizado: Caso) {
-        val indice = listaCasos.indexOfFirst { it.id == casoActualizado.id }
-        if (indice != -1) {
-            listaCasos[indice] = casoActualizado
-        }
-    }
-
-    // 5. Eliminar un caso por ID
-    fun eliminarCaso(id: String) {
-        listaCasos.removeAll { it.id == id }
-    }
-
-    // 6. Buscar casos por título o nombre del cliente
-    fun buscarCasos(texto: String): List<Caso> {
-        if (texto.isEmpty()) return listaCasos
-        return listaCasos.filter {
-            it.titulo.contains(texto, ignoreCase = true) ||
-                    it.cliente.contains(texto, ignoreCase = true)
-        }
     }
 }

@@ -1,4 +1,16 @@
-package com.example.parcial.model
+package com.example.parcial.modelo
+
+data class Hallazgo(
+    val id: String,
+    val descripcion: String,
+    val fecha: String
+)
+
+data class Evidencia(
+    val id: String,
+    val titulo: String,
+    val tipo: String
+)
 
 data class Caso(
     val id: String,
@@ -6,7 +18,7 @@ data class Caso(
     val descripcion: String,
     val cliente: String,
     val fechaInicio: String,
-    val estado: String, // "En investigación" o "Cerrado"
+    val estado: String,
     val hallazgos: MutableList<Hallazgo> = mutableListOf(),
     val evidencias: MutableList<Evidencia> = mutableListOf()
 )
