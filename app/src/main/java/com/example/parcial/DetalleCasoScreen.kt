@@ -10,8 +10,14 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.parcial.viewmodel.CasoViewModel
+
+// Colores propios de esta pantalla, coherentes con el resto de la app
+private val NavyMid = Color(0xFF1B263B)
+private val AccentBlue = Color(0xFF3E92CC)
+private val TextoClaro = Color(0xFFCBD5E1)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -24,7 +30,7 @@ fun DetalleCasoScreen(
     val caso = viewModel.listaCasos.find { it.id == casoId }
 
     if (caso == null) {
-        Text("Caso no encontrado")
+        Text("Caso no encontrado", color = Color.White)
         return
     }
 
@@ -59,22 +65,24 @@ fun DetalleCasoScreen(
     }
 
     Scaffold(
+        containerColor = Color.Transparent,
         topBar = {
             TopAppBar(
-                title = { Text(caso.titulo) },
+                title = { Text(caso.titulo, color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = onVolver) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver", tint = Color.White)
                     }
                 },
                 actions = {
                     IconButton(onClick = { onEditar(caso.id) }) {
-                        Icon(Icons.Default.Edit, contentDescription = "Editar")
+                        Icon(Icons.Default.Edit, contentDescription = "Editar", tint = Color.White)
                     }
                     IconButton(onClick = { mostrarDialogoEliminar = true }) {
-                        Icon(Icons.Default.Delete, contentDescription = "Eliminar")
+                        Icon(Icons.Default.Delete, contentDescription = "Eliminar", tint = Color.White)
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         }
     ) { innerPadding ->
@@ -83,12 +91,21 @@ fun DetalleCasoScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            TabRow(selectedTabIndex = tabSeleccionado) {
+            TabRow(
+                selectedTabIndex = tabSeleccionado,
+                containerColor = Color.Transparent,
+                contentColor = AccentBlue
+            ) {
                 tabs.forEachIndexed { index, titulo ->
                     Tab(
                         selected = tabSeleccionado == index,
                         onClick = { tabSeleccionado = index },
-                        text = { Text(titulo) }
+                        text = {
+                            Text(
+                                titulo,
+                                color = if (tabSeleccionado == index) AccentBlue else TextoClaro
+                            )
+                        }
                     )
                 }
             }
@@ -103,20 +120,20 @@ fun DetalleCasoScreen(
                             .verticalScroll(rememberScrollState()),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text("Título", style = MaterialTheme.typography.labelSmall)
-                        Text(caso.titulo, style = MaterialTheme.typography.bodyLarge)
-                        Divider()
-                        Text("Descripción", style = MaterialTheme.typography.labelSmall)
-                        Text(caso.descripcion, style = MaterialTheme.typography.bodyLarge)
-                        Divider()
-                        Text("Cliente", style = MaterialTheme.typography.labelSmall)
-                        Text(caso.cliente, style = MaterialTheme.typography.bodyLarge)
-                        Divider()
-                        Text("Fecha de inicio", style = MaterialTheme.typography.labelSmall)
-                        Text(caso.fechaInicio, style = MaterialTheme.typography.bodyLarge)
-                        Divider()
-                        Text("Estado", style = MaterialTheme.typography.labelSmall)
-                        Text(caso.estado, style = MaterialTheme.typography.bodyLarge)
+                        Text("Título", style = MaterialTheme.typography.labelSmall, color = AccentBlue)
+                        Text(caso.titulo, style = MaterialTheme.typography.bodyLarge, color = Color.White)
+                        Divider(color = TextoClaro.copy(alpha = 0.25f))
+                        Text("Descripción", style = MaterialTheme.typography.labelSmall, color = AccentBlue)
+                        Text(caso.descripcion, style = MaterialTheme.typography.bodyLarge, color = Color.White)
+                        Divider(color = TextoClaro.copy(alpha = 0.25f))
+                        Text("Cliente", style = MaterialTheme.typography.labelSmall, color = AccentBlue)
+                        Text(caso.cliente, style = MaterialTheme.typography.bodyLarge, color = Color.White)
+                        Divider(color = TextoClaro.copy(alpha = 0.25f))
+                        Text("Fecha de inicio", style = MaterialTheme.typography.labelSmall, color = AccentBlue)
+                        Text(caso.fechaInicio, style = MaterialTheme.typography.bodyLarge, color = Color.White)
+                        Divider(color = TextoClaro.copy(alpha = 0.25f))
+                        Text("Estado", style = MaterialTheme.typography.labelSmall, color = AccentBlue)
+                        Text(caso.estado, style = MaterialTheme.typography.bodyLarge, color = Color.White)
                     }
                 }
                 1 -> {
@@ -128,10 +145,21 @@ fun DetalleCasoScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         caso.hallazgos.forEach { hallazgo ->
-                            Card(modifier = Modifier.fillMaxWidth()) {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = NavyMid.copy(alpha = 0.85f))
+                            ) {
                                 Column(modifier = Modifier.padding(12.dp)) {
-                                    Text(hallazgo.descripcion, style = MaterialTheme.typography.bodyMedium)
-                                    Text("Fecha: ${hallazgo.fecha}", style = MaterialTheme.typography.bodySmall)
+                                    Text(
+                                        hallazgo.descripcion,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = Color.White
+                                    )
+                                    Text(
+                                        "Fecha: ${hallazgo.fecha}",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = TextoClaro
+                                    )
                                 }
                             }
                         }
@@ -140,7 +168,16 @@ fun DetalleCasoScreen(
                             value = textoHallazgo,
                             onValueChange = { textoHallazgo = it },
                             label = { Text("Nuevo hallazgo") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = Color.White,
+                                unfocusedTextColor = Color.White,
+                                focusedLabelColor = AccentBlue,
+                                unfocusedLabelColor = TextoClaro,
+                                focusedBorderColor = AccentBlue,
+                                unfocusedBorderColor = TextoClaro,
+                                cursorColor = AccentBlue
+                            )
                         )
                         Button(
                             onClick = {
@@ -149,7 +186,8 @@ fun DetalleCasoScreen(
                                     textoHallazgo = ""
                                 }
                             },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(containerColor = AccentBlue)
                         ) {
                             Text("Agregar hallazgo")
                         }
@@ -164,10 +202,21 @@ fun DetalleCasoScreen(
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         caso.evidencias.forEach { evidencia ->
-                            Card(modifier = Modifier.fillMaxWidth()) {
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = NavyMid.copy(alpha = 0.85f))
+                            ) {
                                 Column(modifier = Modifier.padding(12.dp)) {
-                                    Text(evidencia.titulo, style = MaterialTheme.typography.bodyMedium)
-                                    Text("Tipo: ${evidencia.tipo}", style = MaterialTheme.typography.bodySmall)
+                                    Text(
+                                        evidencia.titulo,
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = Color.White
+                                    )
+                                    Text(
+                                        "Tipo: ${evidencia.tipo}",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = TextoClaro
+                                    )
                                 }
                             }
                         }
@@ -176,7 +225,16 @@ fun DetalleCasoScreen(
                             value = textoEvidencia,
                             onValueChange = { textoEvidencia = it },
                             label = { Text("Nueva evidencia") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = Color.White,
+                                unfocusedTextColor = Color.White,
+                                focusedLabelColor = AccentBlue,
+                                unfocusedLabelColor = TextoClaro,
+                                focusedBorderColor = AccentBlue,
+                                unfocusedBorderColor = TextoClaro,
+                                cursorColor = AccentBlue
+                            )
                         )
                         Button(
                             onClick = {
@@ -185,7 +243,8 @@ fun DetalleCasoScreen(
                                     textoEvidencia = ""
                                 }
                             },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(containerColor = AccentBlue)
                         ) {
                             Text("Agregar evidencia")
                         }
@@ -199,13 +258,26 @@ fun DetalleCasoScreen(
                             .padding(16.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        Text("Estado actual: ${caso.estado}", style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            "Estado actual: ${caso.estado}",
+                            style = MaterialTheme.typography.bodyLarge,
+                            color = Color.White
+                        )
                         OutlinedTextField(
                             value = descripcionCierre,
                             onValueChange = { descripcionCierre = it },
                             label = { Text("Descripción de cierre") },
                             modifier = Modifier.fillMaxWidth(),
-                            minLines = 3
+                            minLines = 3,
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedTextColor = Color.White,
+                                unfocusedTextColor = Color.White,
+                                focusedLabelColor = AccentBlue,
+                                unfocusedLabelColor = TextoClaro,
+                                focusedBorderColor = AccentBlue,
+                                unfocusedBorderColor = TextoClaro,
+                                cursorColor = AccentBlue
+                            )
                         )
                         Button(
                             onClick = {
@@ -213,7 +285,8 @@ fun DetalleCasoScreen(
                                 onVolver()
                             },
                             modifier = Modifier.fillMaxWidth(),
-                            enabled = caso.estado != "Cerrado"
+                            enabled = caso.estado != "Cerrado",
+                            colors = ButtonDefaults.buttonColors(containerColor = AccentBlue)
                         ) {
                             Text(if (caso.estado == "Cerrado") "Caso ya cerrado" else "Cerrar caso")
                         }
