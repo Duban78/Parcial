@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -36,7 +37,8 @@ private val AccentBlue = Color(0xFF3E92CC)
 @Composable
 fun CasosScreen(
     viewModel: CasoViewModel,
-    onVerDetalle: (String) -> Unit
+    onVerDetalle: (String) -> Unit,
+    onVolverInicio: () -> Unit
 ) {
     val listaCasos = viewModel.listaCasos
     val textoBusqueda = viewModel.textoBusqueda
@@ -78,12 +80,22 @@ fun CasosScreen(
                 visible = visible,
                 enter = fadeIn(tween(350)) + slideInVertically(tween(350)) { -30 }
             ) {
-                Text(
-                    text = "Gestión de Casos",
-                    style = MaterialTheme.typography.headlineMedium,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = onVolverInicio) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Volver al inicio",
+                            tint = Color.White
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "Gestión de Casos",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
