@@ -18,7 +18,8 @@ data class Caso(
     val descripcion: String,
     val cliente: String,
     val fechaInicio: String,
-    val estado: String,
+    var estado: String,
+    var descripcionCierre: String = "",
     val hallazgos: MutableList<Hallazgo> = mutableListOf(),
     val evidencias: MutableList<Evidencia> = mutableListOf()
 )
