@@ -9,15 +9,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -58,9 +62,54 @@ fun HomeScreen(
                     endY = 900f
                 )
             )
-            .padding(horizontal = 20.dp, vertical = 24.dp)
     ) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        // --- Capas decorativas de fondo (para que no se vea vacío) ---
+
+        // Blob difuso superior derecho
+        Box(
+            modifier = Modifier
+                .size(260.dp)
+                .align(Alignment.TopEnd)
+                .offset(x = 90.dp, y = (-60).dp)
+                .background(
+                    Brush.radialGradient(
+                        colors = listOf(AccentBlue.copy(alpha = 0.20f), Color.Transparent)
+                    ),
+                    shape = CircleShape
+                )
+        )
+
+        // Blob difuso inferior izquierdo
+        Box(
+            modifier = Modifier
+                .size(320.dp)
+                .align(Alignment.BottomStart)
+                .offset(x = (-100).dp, y = 60.dp)
+                .background(
+                    Brush.radialGradient(
+                        colors = listOf(Color(0xFF5C6BC0).copy(alpha = 0.16f), Color.Transparent)
+                    ),
+                    shape = CircleShape
+                )
+        )
+
+        // Lupa gigante como marca de agua, para llenar el espacio vacío bajo las tarjetas
+        Icon(
+            imageVector = Icons.Default.Search,
+            contentDescription = null,
+            tint = Color.White.copy(alpha = 0.05f),
+            modifier = Modifier
+                .size(280.dp)
+                .align(Alignment.Center)
+                .offset(y = 160.dp)
+                .rotate(-15f)
+        )
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp, vertical = 24.dp)
+        ) {
 
             AnimatedVisibility(
                 visible = visible,
