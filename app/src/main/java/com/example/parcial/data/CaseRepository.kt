@@ -46,4 +46,15 @@ object CasoRepository {
     fun agregarCaso(caso: Caso) {
         listaCasos.add(caso)
     }
+
+    fun editarCaso(casoActualizado: Caso) {
+        val index = listaCasos.indexOfFirst { it.id == casoActualizado.id }
+        if (index != -1) {
+            listaCasos[index] = casoActualizado
+        }
+    }
+
+    fun eliminarCaso(id: String) {
+        listaCasos.removeIf { it.id == id }
+    }
 }
