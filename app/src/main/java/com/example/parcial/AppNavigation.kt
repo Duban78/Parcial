@@ -31,7 +31,7 @@ fun AppNavigation(
         )
         "new_case" -> NuevoCasoScreen(
             viewModel = casoViewModel,
-            onVolver = { currentScreen = "my_cases" }
+            onVolver = { currentScreen = "home" }
         )
         "detalle_caso" -> DetalleCasoScreen(
             casoId = casoSeleccionadoId,

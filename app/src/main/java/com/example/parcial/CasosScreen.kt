@@ -1,5 +1,6 @@
 package com.example.parcial
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -10,7 +11,10 @@ import androidx.compose.ui.unit.dp
 import com.example.parcial.viewmodel.CasoViewModel
 
 @Composable
-fun CasosScreen(viewModel: CasoViewModel) {
+fun CasosScreen(
+    viewModel: CasoViewModel,
+    onVerDetalle: (String) -> Unit
+) {
     val listaCasos = viewModel.listaCasos
     val textoBusqueda = viewModel.textoBusqueda
 
@@ -19,7 +23,6 @@ fun CasosScreen(viewModel: CasoViewModel) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Título de la pantalla
         Text(
             text = "Gestión de Casos",
             style = MaterialTheme.typography.headlineMedium
@@ -27,7 +30,6 @@ fun CasosScreen(viewModel: CasoViewModel) {
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Barra de búsqueda vinculada al ViewModel
         OutlinedTextField(
             value = textoBusqueda,
             onValueChange = { viewModel.actualizarTextoBusqueda(it) },
@@ -37,14 +39,15 @@ fun CasosScreen(viewModel: CasoViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Lista dinámica de casos
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(listaCasos) { caso ->
                 Card(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable { onVerDetalle(caso.id) },
                     elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
                 ) {
                     Column(
