@@ -13,7 +13,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
@@ -131,12 +130,10 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Grid de tarjetas — Casos cerrados queda sin acción
-            // hasta que crees esa pantalla y la agregues al "when" de AppNavigation
+            // Tarjetas de acceso rápido
             val tarjetas = listOf(
                 Tarjeta("Mis casos", "Revisa y gestiona tus investigaciones", Icons.Default.List, onNavigateToCases),
-                Tarjeta("Nuevo caso", "Registra un caso para comenzar", Icons.Default.AddCircle, onNavigateToNewCase),
-                Tarjeta("Casos cerrados", "Revisa los casos finalizados", Icons.Default.CheckCircle) {}
+                Tarjeta("Nuevo caso", "Registra un caso para comenzar", Icons.Default.AddCircle, onNavigateToNewCase)
             )
 
             Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
