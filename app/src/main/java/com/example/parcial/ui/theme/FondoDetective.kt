@@ -12,25 +12,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
-// ── Paleta única de la app ──
-// Cualquier pantalla que necesite estos colores los importa desde aquí,
-// en vez de volver a declararlos.
 val NavyDark = Color(0xFF0D1B2A)
 val NavyMid = Color(0xFF1B263B)
 val AccentBlue = Color(0xFF3E92CC)
 val TextoClaro = Color(0xFF8FA6C8)
 
-/**
- * Fondo degradado + blobs decorativos, reutilizable en cualquier pantalla.
- *
- * Uso:
- * @Composable
- * fun MiPantalla() {
- *     FondoDetective {
- *         // tu contenido de siempre va aquí adentro, tal cual
- *     }
- * }
- */
+
 @Composable
 fun FondoDetective(content: @Composable () -> Unit) {
     Box(

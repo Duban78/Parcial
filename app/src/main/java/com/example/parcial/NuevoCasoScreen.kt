@@ -14,7 +14,6 @@ import com.example.parcial.modelo.Caso
 import com.example.parcial.viewmodel.CasoViewModel
 import com.example.parcial.ui.theme.FondoDetective   // 👈 nuevo import
 
-// Colores propios de esta pantalla, coherentes con el resto de la app
 private val AccentBlue = Color(0xFF3E92CC)
 private val TextoClaro = Color(0xFFCBD5E1)
 
@@ -43,7 +42,7 @@ fun NuevoCasoScreen(
         cursorColor = AccentBlue
     )
 
-    FondoDetective {   // 👈 todo el Scaffold ahora vive adentro
+    FondoDetective {   //
         Scaffold(
             containerColor = Color.Transparent,
             topBar = {
