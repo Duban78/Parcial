@@ -5,34 +5,27 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.parcial.ui.theme.AccentBlue
+import com.example.parcial.ui.theme.FondoDetective
+import com.example.parcial.ui.theme.NavyMid
+import com.example.parcial.ui.theme.TextoClaro
 import java.util.Calendar
-
-// Colores base "detective" — ajústalos a tu ParcialTheme si ya tienes una paleta definida
-private val NavyDark = Color(0xFF0D1B2A)
-private val NavyMid = Color(0xFF1B263B)
-private val AccentBlue = Color(0xFF3E92CC)
 
 @Composable
 fun HomeScreen(
@@ -46,69 +39,15 @@ fun HomeScreen(
         else -> "Buenas noches, Detective"
     }
 
-    // Controla si ya se debe mostrar el contenido, para disparar la animación de entrada
     var visible by remember { mutableStateOf(false) }
     LaunchedEffect(Unit) { visible = true }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Brush.verticalGradient(
-                    colors = listOf(NavyDark, NavyMid),
-                    startY = 0f,
-                    endY = 900f
-                )
-            )
-    ) {
-        // --- Capas decorativas de fondo (para que no se vea vacío) ---
-
-        // Blob difuso superior derecho
-        Box(
-            modifier = Modifier
-                .size(260.dp)
-                .align(Alignment.TopEnd)
-                .offset(x = 90.dp, y = (-60).dp)
-                .background(
-                    Brush.radialGradient(
-                        colors = listOf(AccentBlue.copy(alpha = 0.20f), Color.Transparent)
-                    ),
-                    shape = CircleShape
-                )
-        )
-
-        // Blob difuso inferior izquierdo
-        Box(
-            modifier = Modifier
-                .size(320.dp)
-                .align(Alignment.BottomStart)
-                .offset(x = (-100).dp, y = 60.dp)
-                .background(
-                    Brush.radialGradient(
-                        colors = listOf(Color(0xFF5C6BC0).copy(alpha = 0.16f), Color.Transparent)
-                    ),
-                    shape = CircleShape
-                )
-        )
-
-        // Lupa gigante como marca de agua, para llenar el espacio vacío bajo las tarjetas
-        Icon(
-            imageVector = Icons.Default.Search,
-            contentDescription = null,
-            tint = Color.White.copy(alpha = 0.05f),
-            modifier = Modifier
-                .size(280.dp)
-                .align(Alignment.Center)
-                .offset(y = 160.dp)
-                .rotate(-15f)
-        )
-
+    FondoDetective {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp, vertical = 24.dp)
         ) {
-
             AnimatedVisibility(
                 visible = visible,
                 enter = fadeIn(tween(400)) + slideInVertically(tween(400)) { -40 }
@@ -122,7 +61,7 @@ fun HomeScreen(
                     )
                     Text(
                         text = "La verdad siempre deja rastro",
-                        color = Color(0xFF8FA6C8),
+                        color = TextoClaro,
                         fontSize = 14.sp
                     )
                 }
@@ -130,7 +69,6 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            // Tarjetas de acceso rápido
             val tarjetas = listOf(
                 Tarjeta("Mis casos", "Revisa y gestiona tus investigaciones", Icons.Default.List, onNavigateToCases),
                 Tarjeta("Nuevo caso", "Registra un caso para comenzar", Icons.Default.AddCircle, onNavigateToNewCase)
@@ -166,7 +104,6 @@ private data class Tarjeta(
 private fun TarjetaDinamica(tarjeta: Tarjeta, modifier: Modifier = Modifier) {
     val interactionSource = remember { MutableInteractionSource() }
     val pressed by interactionSource.collectIsPressedAsState()
-    // La tarjeta se "hunde" ligeramente al presionarla — feedback táctil visual
     val scale by animateFloatAsState(targetValue = if (pressed) 0.95f else 1f, label = "scaleTarjeta")
 
     Card(
@@ -200,7 +137,7 @@ private fun TarjetaDinamica(tarjeta: Tarjeta, modifier: Modifier = Modifier) {
                 )
                 Text(
                     text = tarjeta.descripcion,
-                    color = Color(0xFF8FA6C8),
+                    color = TextoClaro,
                     fontSize = 11.sp
                 )
             }
