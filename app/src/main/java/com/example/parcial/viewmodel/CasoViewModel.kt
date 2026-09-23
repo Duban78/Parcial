@@ -31,6 +31,28 @@ class CasoViewModel : ViewModel() {
         listaCasos = CasoRepository.obtenerCasos().toList()
     }
 
+    fun editarCaso(caso: Caso) {
+        CasoRepository.editarCaso(caso)
+        listaCasos = CasoRepository.obtenerCasos().toList()
+    }
+
+    fun eliminarCaso(id: String) {
+        CasoRepository.eliminarCaso(id)
+        listaCasos = CasoRepository.obtenerCasos().toList()
+    }
+
+    fun cerrarCaso(id: String, descripcionCierre: String) {
+        val caso = CasoRepository.obtenerCasoPorId(id)
+        if (caso != null) {
+            val casoCerrado = caso.copy(
+                estado = "Cerrado",
+                descripcionCierre = descripcionCierre
+            )
+            CasoRepository.editarCaso(casoCerrado)
+            listaCasos = CasoRepository.obtenerCasos().toList()
+        }
+    }
+
     fun agregarHallazgoACaso(casoId: String, descripcionTexto: String) {
         val caso = CasoRepository.obtenerCasoPorId(casoId)
         if (caso != null) {
