@@ -50,7 +50,8 @@ fun AppNavigation(
                 onVerDetalle = { id ->
                     casoSeleccionadoId = id
                     currentScreen = "detalle_caso"
-                }
+                },
+                onVolverInicio = { currentScreen = "home" }
             )
             "new_case" -> NuevoCasoScreen(
                 viewModel = casoViewModel,
