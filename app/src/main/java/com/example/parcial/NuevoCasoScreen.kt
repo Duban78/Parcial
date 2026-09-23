@@ -8,9 +8,14 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.parcial.modelo.Caso
 import com.example.parcial.viewmodel.CasoViewModel
+
+// Colores propios de esta pantalla, coherentes con el resto de la app
+private val AccentBlue = Color(0xFF3E92CC)
+private val TextoClaro = Color(0xFFCBD5E1)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,15 +32,27 @@ fun NuevoCasoScreen(
 
     val opcionesEstado = listOf("En investigación", "Cerrado")
 
+    val coloresCampo = OutlinedTextFieldDefaults.colors(
+        focusedTextColor = Color.White,
+        unfocusedTextColor = Color.White,
+        focusedLabelColor = AccentBlue,
+        unfocusedLabelColor = TextoClaro,
+        focusedBorderColor = AccentBlue,
+        unfocusedBorderColor = TextoClaro,
+        cursorColor = AccentBlue
+    )
+
     Scaffold(
+        containerColor = Color.Transparent,
         topBar = {
             TopAppBar(
-                title = { Text("Nuevo Caso") },
+                title = { Text("Nuevo Caso", color = Color.White) },
                 navigationIcon = {
                     IconButton(onClick = onVolver) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Volver", tint = Color.White)
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
             )
         }
     ) { innerPadding ->
@@ -51,7 +68,8 @@ fun NuevoCasoScreen(
                 value = titulo,
                 onValueChange = { titulo = it },
                 label = { Text("Título *") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = coloresCampo
             )
 
             OutlinedTextField(
@@ -59,24 +77,27 @@ fun NuevoCasoScreen(
                 onValueChange = { descripcion = it },
                 label = { Text("Descripción *") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 3
+                minLines = 3,
+                colors = coloresCampo
             )
 
             OutlinedTextField(
                 value = cliente,
                 onValueChange = { cliente = it },
                 label = { Text("Cliente / Solicitante *") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = coloresCampo
             )
 
             OutlinedTextField(
                 value = fechaInicio,
                 onValueChange = { fechaInicio = it },
                 label = { Text("Fecha de inicio (ej: 2026-09-01) *") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = coloresCampo
             )
 
-            Text("Estado:", style = MaterialTheme.typography.labelLarge)
+            Text("Estado:", style = MaterialTheme.typography.labelLarge, color = AccentBlue)
             opcionesEstado.forEach { opcion ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -84,10 +105,15 @@ fun NuevoCasoScreen(
                 ) {
                     RadioButton(
                         selected = estado == opcion,
-                        onClick = { estado = opcion }
+                        onClick = { estado = opcion },
+                        colors = RadioButtonDefaults.colors(
+                            selectedColor = AccentBlue,
+                            unselectedColor = TextoClaro
+                        )
                     )
                     Text(
                         text = opcion,
+                        color = Color.White,
                         modifier = Modifier.padding(start = 8.dp, top = 12.dp)
                     )
                 }
@@ -119,7 +145,8 @@ fun NuevoCasoScreen(
                         onVolver()
                     }
                 },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = AccentBlue)
             ) {
                 Text("Guardar caso")
             }
